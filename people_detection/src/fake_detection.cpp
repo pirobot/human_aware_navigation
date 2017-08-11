@@ -38,6 +38,8 @@ int main(int argc, char **argv)
   people_msgs::People people;
   people_msgs::Person person;
 
+  person.name = ros::this_node::getName();
+
   ros::Duration(2.0).sleep();
   ROS_INFO("starting fake people detection");
 
