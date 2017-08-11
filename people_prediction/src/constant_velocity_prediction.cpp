@@ -35,6 +35,7 @@
  ******************************************************************************/
 
 #include <people_prediction/constant_velocity_prediction.h>
+#include <iostream>
 
 using namespace human_aware_navigation;
 
@@ -79,7 +80,7 @@ void ConstantVelocityPrediction::peopleCallback(people_msgs::People msg)
   {
     people.header.stamp = ros::Time::now();
   }
-
+  
   //in this loop, we take the people from the message and their velocities and
   //fill the prediction container
   for(int i=0; i<num_predictions_; i++)
@@ -101,6 +102,9 @@ void ConstantVelocityPrediction::peopleCallback(people_msgs::People msg)
 
       //the velocity stays the same
       person_one_timestep.velocity = person.velocity;
+      
+      //keep the name
+      person_one_timestep.name = person.name;
 
       //fill the header
       people_one_timestep.header.frame_id = people.header.frame_id;
@@ -113,7 +117,7 @@ void ConstantVelocityPrediction::peopleCallback(people_msgs::People msg)
       //create the prediction marker
       prediction_marker_.header.frame_id = people.header.frame_id;
       prediction_marker_.header.stamp = people.header.stamp;
-      prediction_marker_.id = i;
+      prediction_marker_.id = i + j * num_predictions_;
 
       prediction_marker_.pose.position = person_one_timestep.position;
       //the opacity of the marker is adjusted according to the prediction step
